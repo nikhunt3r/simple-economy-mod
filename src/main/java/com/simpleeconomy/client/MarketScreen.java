@@ -742,7 +742,7 @@ protected void renderLabels(
 
     graphics.drawString(
             this.font,
-            "SIMPLE ECONOMY / РЫНОК",
+            EconomyText.component("SIMPLE ECONOMY / РЫНОК"),
             16,
             12,
             WHITE
@@ -763,7 +763,7 @@ protected void renderLabels(
 
         graphics.drawString(
                 this.font,
-                "Найдено: " + ClientMarketCache.getTotalListings(),
+                EconomyText.component("Найдено: ") + ClientMarketCache.getTotalListings(),
                 175,
                 89,
                 GRAY
@@ -771,7 +771,7 @@ protected void renderLabels(
 
         graphics.drawString(
                 this.font,
-                "Страница "
+                EconomyText.component("Страница ")
                         + (ClientMarketCache.getPage() + 1)
                         + " / "
                         + ClientMarketCache.getTotalPages(),
@@ -787,7 +787,7 @@ protected void renderLabels(
 
             graphics.drawString(
                     this.font,
-                    "Загрузка объявлений...",
+                    EconomyText.component("Загрузка объявлений..."),
                     18,
                     112,
                     GRAY
@@ -852,7 +852,7 @@ protected void renderLabels(
 
         graphics.drawString(
                 this.font,
-                "ВЫСТАВЛЕНИЕ ТОВАРА",
+                EconomyText.component("ВЫСТАВЛЕНИЕ ТОВАРА"),
                 18,
                 76,
                 WHITE
@@ -860,7 +860,7 @@ protected void renderLabels(
 
         graphics.drawString(
                 this.font,
-                "ПОМЕСТИТЕ ПРЕДМЕТ В СЛОТ",
+                EconomyText.component("ПОМЕСТИТЕ ПРЕДМЕТ В СЛОТ"),
                 18,
                 121,
                 GRAY
@@ -868,7 +868,7 @@ protected void renderLabels(
 
         graphics.drawString(
                 this.font,
-                "Цена указывается за весь лот.",
+                EconomyText.component("Цена указывается за весь лот."),
                 18,
                 157,
                 GRAY
@@ -879,7 +879,7 @@ protected void renderLabels(
 
         graphics.drawString(
                 this.font,
-                "БЫСТРАЯ ПРОДАЖА",
+                EconomyText.component("БЫСТРАЯ ПРОДАЖА"),
                 18,
                 76,
                 WHITE
@@ -891,7 +891,7 @@ protected void renderLabels(
 
             graphics.drawString(
                     this.font,
-                    "Положите предмет в слот.",
+                    EconomyText.component("Положите предмет в слот."),
                     65,
                     94,
                     GRAY
@@ -914,7 +914,7 @@ protected void renderLabels(
 
             graphics.drawString(
                     this.font,
-                    "Количество: " + stack.getCount(),
+                    EconomyText.component("Количество: ") + stack.getCount(),
                     65,
                     103,
                     GRAY
@@ -924,7 +924,7 @@ protected void renderLabels(
 
                 graphics.drawString(
                         this.font,
-                        "Цена не установлена.",
+                        EconomyText.component("Цена не установлена."),
                         65,
                         122,
                         RED
@@ -932,7 +932,7 @@ protected void renderLabels(
 
                 graphics.drawString(
                         this.font,
-                        "Продать этот предмет нельзя.",
+                        EconomyText.component("Продать этот предмет нельзя."),
                         65,
                         138,
                         GRAY
@@ -951,7 +951,7 @@ protected void renderLabels(
 
                     graphics.drawString(
                             this.font,
-                            "Цена за 1 штуку: "
+                            EconomyText.component("Цена за 1 штуку: ")
                                     + formatMoney(unitPrice) + " $",
                             65,
                             119,
@@ -960,7 +960,7 @@ protected void renderLabels(
 
                     graphics.drawString(
                             this.font,
-                            "Всего за стак: "
+                            EconomyText.component("Всего за стак: ")
                                     + formatMoney(totalPrice) + " $",
                             65,
                             137,
@@ -971,7 +971,7 @@ protected void renderLabels(
 
                     graphics.drawString(
                             this.font,
-                            "Слишком большая сумма.",
+                            EconomyText.component("Слишком большая сумма."),
                             65,
                             122,
                             RED
@@ -998,7 +998,7 @@ protected void renderLabels(
 
         graphics.drawString(
                 this.font,
-                "ИНВЕНТАРЬ",
+                EconomyText.component("ИНВЕНТАРЬ"),
                 169,
                 171,
                 GRAY
