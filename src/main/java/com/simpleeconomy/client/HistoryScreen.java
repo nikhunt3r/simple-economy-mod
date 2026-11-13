@@ -1,5 +1,7 @@
 package com.simpleeconomy.client;
 
+import com.simpleeconomy.util.EconomyText;
+
 import com.simpleeconomy.economy.TransactionEntry;
 import com.simpleeconomy.network.ClientHistoryCache;
 import com.simpleeconomy.network.HistoryRequest;
@@ -39,7 +41,7 @@ public class HistoryScreen extends Screen {
     private int panelHeight;
 
     public HistoryScreen() {
-        super(Component.literal("История операций"));
+        super(EconomyText.component("История операций"));
     }
 
     @Override
@@ -57,7 +59,7 @@ public class HistoryScreen extends Screen {
 
         this.addRenderableWidget(
                 Button.builder(
-                        Component.literal("Назад"),
+                        EconomyText.component("Назад"),
                         button -> this.onClose()
                 ).bounds(
                         panelX + panelWidth / 2 - 45,
