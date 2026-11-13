@@ -188,7 +188,7 @@ public class TransferScreen extends Screen {
 
         graphics.drawString(
                 this.font,
-                "ПЕРЕВОД МЕЖДУ ИГРОКАМИ",
+                EconomyText.component("ПЕРЕВОД МЕЖДУ ИГРОКАМИ"),
                 panelX + 20,
                 panelY + 19,
                 WHITE
@@ -220,7 +220,7 @@ public class TransferScreen extends Screen {
         // Поля
         graphics.drawString(
                 this.font,
-                "ПОЛУЧАТЕЛЬ",
+                EconomyText.component("ПОЛУЧАТЕЛЬ"),
                 panelX + 20,
                 panelY + 75,
                 GRAY
@@ -228,7 +228,7 @@ public class TransferScreen extends Screen {
 
         graphics.drawString(
                 this.font,
-                "СУММА ПЕРЕВОДА",
+                EconomyText.component("СУММА ПЕРЕВОДА"),
                 panelX + 20,
                 panelY + 124,
                 GRAY
