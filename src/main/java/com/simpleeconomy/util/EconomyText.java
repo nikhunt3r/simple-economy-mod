@@ -1,6 +1,7 @@
 package com.simpleeconomy.util;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -98,7 +99,7 @@ public final class EconomyText {
         return result.toString();
     }
 
-    public static Component component(String value) {
+    public static MutableComponent component(String value) {
         if (value == null || !value.startsWith(PREFIX)) {
             return value == null ? Component.literal("") : TEXT_KEYS.containsKey(value) ? Component.translatable(TEXT_KEYS.get(value)) : Component.literal(value);
         }
