@@ -66,3 +66,5 @@ The marketplace follows several important rules:
 Simple Economy is currently under development. New features, improvements, and bug fixes are being added as development progresses.
 
 The project is primarily focused on creating a practical economy system for multiplayer Minecraft servers.
+
+View all commands: https://github.com/nikhunt3r/simple-economy-mod.wiki.git
