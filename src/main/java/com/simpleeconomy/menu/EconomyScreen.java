@@ -1,6 +1,8 @@
 
 package com.simpleeconomy.menu;
 
+import com.simpleeconomy.util.EconomyText;
+
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -35,7 +37,7 @@ public class EconomyScreen extends Screen {
     private int panelHeight;
 
     public EconomyScreen() {
-        super(Component.literal("Simple Economy"));
+        super(EconomyText.component("Simple Economy"));
     }
 
     @Override
@@ -59,7 +61,7 @@ public void renderBackground(
         // Кнопка закрытия
         this.addRenderableWidget(
                 Button.builder(
-                        Component.literal("X"),
+                        EconomyText.component("X"),
                         button -> this.onClose()
                 ).bounds(
                         panelX + panelWidth - 34,
