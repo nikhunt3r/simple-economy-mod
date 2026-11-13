@@ -147,6 +147,59 @@ public class EconomyData extends SavedData {
         return updated;
     }
 
+    /**
+     * Начисляет игроку награду за выполненный контракт.
+     * Вызывать только на серверном потоке.
+     */
+    public long addContractReward(
+            UUID playerId,
+            long amount,
+            String contractName
+    ) {
+
+        if (amount <= 0) {
+            throw new IllegalArgumentException(
+                    "Награда должна быть больше нуля."
+            );
+        }
+
+        String safeContractName =
+                contractName == null ? "" : contractName.trim();
+
+        if (safeContractName.isEmpty()) {
+            safeContractName = "Без названия";
+        }
+
+        // Ограничиваем длину, чтобы запись помещалась в сетевой формат истории.
+        if (safeContractName.length() > 80) {
+            safeContractName = safeContractName.substring(0, 80);
+        }
+
+        long current = getOrCreateBalance(playerId);
+        long updated;
+
+        try {
+            updated = Math.addExact(current, amount);
+        } catch (ArithmeticException exception) {
+            throw new IllegalArgumentException(
+                    "Слишком большое значение баланса."
+            );
+        }
+
+        balances.put(playerId, updated);
+
+        addHistory(
+                playerId,
+                "Награда за контракт",
+                amount,
+                "Контракт: " + safeContractName
+        );
+
+        setDirty();
+
+        return updated;
+    }
+
     // Списание денег
     public long removeBalance(UUID playerId, long amount) {
 
