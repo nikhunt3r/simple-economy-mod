@@ -1,5 +1,7 @@
 package com.simpleeconomy.client;
 
+import com.simpleeconomy.util.EconomyText;
+
 import com.simpleeconomy.menu.EconomyScreen;
 import com.simpleeconomy.network.BalanceSync;
 import com.simpleeconomy.network.ClientBalanceCache;
@@ -35,7 +37,7 @@ public class TransferScreen extends Screen {
     private Button sendButton;
 
     public TransferScreen() {
-        super(Component.literal("Перевод денег"));
+        super(EconomyText.component("Перевод денег"));
     }
 
     @Override
@@ -59,14 +61,14 @@ public class TransferScreen extends Screen {
                 panelY + 91,
                 panelWidth - 40,
                 20,
-                Component.literal("Ник игрока")
+                EconomyText.component("Ник игрока")
         );
 
         playerField.setMaxLength(16);
         playerField.setFilter(
                 value -> value.matches("[A-Za-z0-9_]{0,16}")
         );
-        playerField.setHint(Component.literal("Ник получателя"));
+        playerField.setHint(EconomyText.component("Ник получателя"));
 
         this.addRenderableWidget(playerField);
 
@@ -77,20 +79,20 @@ public class TransferScreen extends Screen {
                 panelY + 140,
                 panelWidth - 40,
                 20,
-                Component.literal("Сумма")
+                EconomyText.component("Сумма")
         );
 
         amountField.setMaxLength(19);
         amountField.setFilter(
                 value -> value.matches("[0-9]*")
         );
-        amountField.setHint(Component.literal("Например, 500"));
+        amountField.setHint(EconomyText.component("Например, 500"));
 
         this.addRenderableWidget(amountField);
 
         // Кнопка отправки
         sendButton = Button.builder(
-                Component.literal("Отправить деньги"),
+                EconomyText.component("Отправить деньги"),
                 button -> sendTransfer()
         ).bounds(
                 panelX + panelWidth / 2 - 75,
@@ -104,7 +106,7 @@ public class TransferScreen extends Screen {
         // Возврат в главное меню
         this.addRenderableWidget(
                 Button.builder(
-                        Component.literal("Назад"),
+                        EconomyText.component("Назад"),
                         button -> this.onClose()
                 ).bounds(
                         panelX + panelWidth / 2 - 45,
