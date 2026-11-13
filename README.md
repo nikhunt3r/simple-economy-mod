@@ -1,25 +1,68 @@
+# Simple Economy
 
-Installation information
-=======
+**Simple Economy** is a Minecraft economy mod for **Minecraft 1.21.1**, built for **NeoForge**.
 
-This template repository can be directly cloned to get you started with a new
-mod. Simply create a new repository cloned from this one, by following the
-instructions provided by [GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
+The mod adds a virtual currency system and a player-driven marketplace, allowing players to earn, spend, and trade money without using physical currency items.
 
-Once you have your clone, simply open the repository in the IDE of your choice. The usual recommendation for an IDE is either IntelliJ IDEA or Eclipse.
+The main goal of the mod is to provide a simple and convenient economy system for multiplayer servers, where players can trade resources, set their own prices, and build an in-game economy.
 
-If at any point you are missing libraries in your IDE, or you've run into problems you can
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
+## Features
 
-Mapping Names:
-============
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/NeoForged/NeoForm/blob/main/Mojang.md
+### Virtual Economy
+- A virtual currency system using `money`.
+- Players can receive, spend, and transfer value through in-game economy mechanics.
+- Administrators can manage player balances.
+- No physical currency items are required.
 
-Additional Resources: 
-==========
-Community Documentation: https://docs.neoforged.net/  
-NeoForged Discord: https://discord.neoforged.net/
+### Player Marketplace
+- Players can create listings to sell their items to other players.
+- Sellers choose their own prices.
+- Listings remain active indefinitely until they are purchased or removed by the seller.
+- The listing price applies to the entire item stack, not to individual items.
+- A 5% commission is charged when an item is sold.
+- Sellers receive the payment after another player purchases their listing.
+
+### Quick Sell
+- Administrators can set standard selling prices for specific items.
+- Players can quickly sell items using the configured prices.
+- The selling price is calculated based on the item quantity.
+- Items without an administrator-defined price cannot be sold through this feature.
+
+### Economy Management
+- Administrative commands for managing player balances.
+- Commands for setting, checking, listing, and removing standard item prices.
+- Support for managing the economy through the server console.
+
+### Transaction History
+- A history of recent economy operations.
+- Helps players keep track of their financial activity.
+
+### User Interface
+- A graphical interface for accessing economy features.
+- Dedicated marketplace tabs for browsing listings, managing personal listings, and selling items.
+- The economy menu can be opened through a keybind or a command.
+
+## Marketplace Rules
+
+The marketplace follows several important rules:
+
+1. The seller chooses the price for the entire listing.
+2. A 5% commission is charged on successful sales.
+3. Listings do not expire automatically.
+4. Items are transferred directly to the buyer's inventory.
+5. A purchase is cancelled if the buyer does not have enough inventory space for the entire item stack.
+6. Removing a listing is also prevented if the seller cannot fit the returned items into their inventory.
+7. Failed transactions do not remove items or charge money.
+
+## Technical Information
+
+- **Minecraft:** 1.21.1
+- **Mod Loader:** NeoForge
+- **Java:** 21
+- **Mod ID:** `simpleeconomy`
+
+## Project Status
+
+Simple Economy is currently under development. New features, improvements, and bug fixes are being added as development progresses.
+
+The project is primarily focused on creating a practical economy system for multiplayer Minecraft servers.
