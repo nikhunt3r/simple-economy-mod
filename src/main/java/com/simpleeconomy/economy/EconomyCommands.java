@@ -1,6 +1,8 @@
 
 package com.simpleeconomy.economy;
 
+import com.simpleeconomy.util.EconomyText;
+
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.LongArgumentType;
 import com.mojang.brigadier.context.CommandContext;
@@ -128,7 +130,7 @@ public class EconomyCommands {
 
         if (player == null) {
             source.sendFailure(
-                    Component.literal("Укажи игрока: /eco balance <игрок>")
+                    EconomyText.component("Укажи игрока: /eco balance <игрок>")
             );
             return 0;
         }
@@ -137,7 +139,7 @@ public class EconomyCommands {
                 .getOrCreateBalance(player.getUUID());
 
         source.sendSuccess(
-                () -> Component.literal(
+                () -> EconomyText.component(
                         "Твой баланс: " + formatMoney(balance) + " $"
                 ),
                 false
@@ -157,7 +159,7 @@ public class EconomyCommands {
                 .getOrCreateBalance(target.getUUID());
 
         context.getSource().sendSuccess(
-                () -> Component.literal(
+                () -> EconomyText.component(
                         "Баланс игрока " + target.getName().getString()
                                 + ": " + formatMoney(balance) + " $"
                 ),
@@ -209,7 +211,7 @@ public class EconomyCommands {
                     + formatMoney(newBalance) + " $";
 
             context.getSource().sendSuccess(
-                    () -> Component.literal(message),
+                    () -> EconomyText.component(message),
                     true
             );
 
@@ -218,7 +220,7 @@ public class EconomyCommands {
         } catch (IllegalArgumentException exception) {
 
             context.getSource().sendFailure(
-                    Component.literal(exception.getMessage())
+                    EconomyText.component(exception.getMessage())
             );
 
             return 0;
@@ -235,7 +237,7 @@ private static int payPlayer(
 
     if (sender == null) {
         source.sendFailure(
-                Component.literal(
+                EconomyText.component(
                         "Переводы доступны только игрокам."
                 )
         );
@@ -273,7 +275,7 @@ private static int payPlayer(
 
         // Сообщение отправителю
         sender.sendSystemMessage(
-                Component.literal(
+                EconomyText.component(
                         "Вы перевели "
                                 + formatMoney(amount)
                                 + " $ игроку "
@@ -286,7 +288,7 @@ private static int payPlayer(
 
         // Уведомление получателю
         target.sendSystemMessage(
-                Component.literal(
+                EconomyText.component(
                         "Игрок "
                                 + sender.getName().getString()
                                 + " перевёл вам "
@@ -302,7 +304,7 @@ private static int payPlayer(
     } catch (IllegalArgumentException exception) {
 
         source.sendFailure(
-                Component.literal(exception.getMessage())
+                EconomyText.component(exception.getMessage())
         );
 
         return 0;
