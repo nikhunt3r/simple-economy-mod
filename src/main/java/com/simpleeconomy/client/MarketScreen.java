@@ -1,5 +1,7 @@
 package com.simpleeconomy.client;
 
+import com.simpleeconomy.util.EconomyText;
+
 import com.simpleeconomy.market.ClientMarketCache;
 import com.simpleeconomy.market.MarketListingView;
 import com.simpleeconomy.market.MarketMenu;
@@ -93,7 +95,7 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> {
         // Общий рынок
 marketTab = this.addRenderableWidget(
         Button.builder(
-                Component.literal("Общий рынок"),
+                EconomyText.component("Общий рынок"),
                 button -> setTab(0)
         ).bounds(
                 leftPos + 10,
@@ -106,7 +108,7 @@ marketTab = this.addRenderableWidget(
 // Мои объявления
 myListingsTab = this.addRenderableWidget(
         Button.builder(
-                Component.literal("Мои объявления"),
+                EconomyText.component("Мои объявления"),
                 button -> setTab(1)
         ).bounds(
                 leftPos + 126,
@@ -119,7 +121,7 @@ myListingsTab = this.addRenderableWidget(
 // Обычная продажа на рынке
 sellTab = this.addRenderableWidget(
         Button.builder(
-                Component.literal("Продать"),
+                EconomyText.component("Продать"),
                 button -> setTab(2)
         ).bounds(
                 leftPos + 242,
@@ -132,7 +134,7 @@ sellTab = this.addRenderableWidget(
 // Быстрая продажа по прайсу
 quickSaleTab = this.addRenderableWidget(
         Button.builder(
-                Component.literal("Быстрая продажа"),
+                EconomyText.component("Быстрая продажа"),
                 button -> setTab(3)
         ).bounds(
                 leftPos + 346,
@@ -149,7 +151,7 @@ for (int i = 0; i < MAX_ROWS; i++) {
 
     actionButtons[i] = this.addRenderableWidget(
             Button.builder(
-                    Component.literal("Купить"),
+                    EconomyText.component("Купить"),
                     button -> performListingAction(index)
             ).bounds(
                     leftPos + 418,
@@ -166,12 +168,12 @@ searchField = new EditBox(
         topPos + 65,
         190,
         20,
-        Component.literal("Поиск")
+        EconomyText.component("Поиск")
 );
 
 searchField.setMaxLength(32);
 searchField.setHint(
-        Component.literal("Предмет или продавец")
+        EconomyText.component("Предмет или продавец")
 );
 
 this.addRenderableWidget(searchField);
@@ -179,7 +181,7 @@ this.addRenderableWidget(searchField);
 // Кнопка поиска
 searchButton = this.addRenderableWidget(
         Button.builder(
-                Component.literal("Найти"),
+                EconomyText.component("Найти"),
                 button -> {
                     currentPage = 0;
                     requestListings();
@@ -195,7 +197,7 @@ searchButton = this.addRenderableWidget(
 // Сортировка
 sortButton = this.addRenderableWidget(
         Button.builder(
-                Component.literal("Сначала новые"),
+                EconomyText.component("Сначала новые"),
                 button -> cycleSort()
         ).bounds(
                 leftPos + 270,
@@ -208,7 +210,7 @@ sortButton = this.addRenderableWidget(
 // Предыдущая страница
 previousPageButton = this.addRenderableWidget(
         Button.builder(
-                Component.literal("<"),
+                EconomyText.component("<"),
                 button -> changePage(-1)
         ).bounds(
                 leftPos + 385,
@@ -221,7 +223,7 @@ previousPageButton = this.addRenderableWidget(
 // Следующая страница
 nextPageButton = this.addRenderableWidget(
         Button.builder(
-                Component.literal(">"),
+                EconomyText.component(">"),
                 button -> changePage(1)
         ).bounds(
                 leftPos + 430,
@@ -238,7 +240,7 @@ nextPageButton = this.addRenderableWidget(
                 topPos + 96,
                 190,
                 20,
-                Component.literal("Цена")
+                EconomyText.component("Цена")
         );
 
         priceField.setMaxLength(19);
@@ -246,7 +248,7 @@ nextPageButton = this.addRenderableWidget(
                 value -> value.matches("[0-9]*")
         );
         priceField.setHint(
-                Component.literal("Цена за весь лот")
+                EconomyText.component("Цена за весь лот")
         );
 
         this.addRenderableWidget(priceField);
@@ -254,7 +256,7 @@ nextPageButton = this.addRenderableWidget(
         // Публикация товара
         publishButton = this.addRenderableWidget(
                 Button.builder(
-                        Component.literal("Выставить на рынок"),
+                        EconomyText.component("Выставить на рынок"),
                         button -> publishListing()
                 ).bounds(
                         leftPos + 105,
@@ -267,7 +269,7 @@ nextPageButton = this.addRenderableWidget(
         
 quickSaleButton = this.addRenderableWidget(
         Button.builder(
-                Component.literal("Продать предметы"),
+                EconomyText.component("Продать предметы"),
                 button -> performQuickSale()
         ).bounds(
                 leftPos + 326,
@@ -281,7 +283,7 @@ quickSaleButton = this.addRenderableWidget(
         // Возврат в банковское меню
         closeButton = this.addRenderableWidget(
                 Button.builder(
-                        Component.literal("Назад"),
+                        EconomyText.component("Назад"),
                         button -> onClose()
                 ).bounds(
                         leftPos + 411,
@@ -398,7 +400,7 @@ private void updateSortButtonLabel() {
         default -> "Сначала новые";
     };
 
-    sortButton.setMessage(Component.literal(label));
+    sortButton.setMessage(EconomyText.component(label));
 }
 
     // Обновляем видимость кнопок объявлений
@@ -426,7 +428,7 @@ private void updateSortButtonLabel() {
         && !ClientMarketCache.isActionPending();
 
         actionButtons[i].setMessage(
-                Component.literal(
+                EconomyText.component(
                         selectedTab == 1 ? "Снять" : "Купить"
                 )
         );
