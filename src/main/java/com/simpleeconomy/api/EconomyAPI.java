@@ -31,12 +31,26 @@ public final class EconomyAPI {
             long amount,
             String contractName
     ) {
+        return addContractReward(player, amount, contractName, null);
+    }
+
+    /**
+     * Pays a contract reward at most once for the supplied stable token.
+     * Reusing a token returns the current balance without creating another payment.
+     */
+    public static long addContractReward(
+            ServerPlayer player,
+            long amount,
+            String contractName,
+            String rewardToken
+    ) {
         Objects.requireNonNull(player, "player");
 
         return EconomyData.get(player.server).addContractReward(
                 player.getUUID(),
                 amount,
-                contractName
+                contractName,
+                rewardToken
         );
     }
 }
