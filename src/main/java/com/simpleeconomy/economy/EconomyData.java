@@ -2,8 +2,10 @@ package com.simpleeconomy.economy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import net.minecraft.core.HolderLookup;
@@ -26,6 +28,9 @@ public class EconomyData extends SavedData {
 
     private final Map<UUID, List<TransactionEntry>> histories =
             new HashMap<>();
+
+    // Persistent idempotency keys prevent duplicate contract payouts after retries.
+    private final Set<String> processedContractRewards = new HashSet<>();
 
     private static final Factory<EconomyData> FACTORY =
             new Factory<>(
@@ -156,50 +161,57 @@ public class EconomyData extends SavedData {
             long amount,
             String contractName
     ) {
+        return addContractReward(playerId, amount, contractName, null);
+    }
 
+    /**
+     * Idempotent contract payout. A stable reward token can only be applied once.
+     */
+    public long addContractReward(
+            UUID playerId,
+            long amount,
+            String contractName,
+            String rewardToken
+    ) {
         if (amount <= 0) {
-            throw new IllegalArgumentException(
-                    "Награда должна быть больше нуля."
-            );
+            throw new IllegalArgumentException("Награда должна быть больше нуля.");
         }
 
-        String safeContractName =
-                contractName == null ? "" : contractName.trim();
+        String safeToken = rewardToken == null ? "" : rewardToken.trim();
+        if (!safeToken.isEmpty() && safeToken.length() > 128) {
+            throw new IllegalArgumentException("Некорректный идентификатор награды.");
+        }
 
+        long current = getOrCreateBalance(playerId);
+        if (!safeToken.isEmpty() && processedContractRewards.contains(safeToken)) {
+            return current;
+        }
+
+        String safeContractName = contractName == null ? "" : contractName.trim();
         if (safeContractName.isEmpty()) {
             safeContractName = "Без названия";
         }
-
-        // Ограничиваем длину, чтобы запись помещалась в сетевой формат истории.
         if (safeContractName.length() > 80) {
             safeContractName = safeContractName.substring(0, 80);
         }
 
-        long current = getOrCreateBalance(playerId);
         long updated;
-
         try {
             updated = Math.addExact(current, amount);
         } catch (ArithmeticException exception) {
-            throw new IllegalArgumentException(
-                    "Слишком большое значение баланса."
-            );
+            throw new IllegalArgumentException("Слишком большое значение баланса.");
         }
 
         balances.put(playerId, updated);
+        addHistory(playerId, "Награда за контракт", amount, "Контракт: " + safeContractName);
 
-        addHistory(
-                playerId,
-                "Награда за контракт",
-                amount,
-                "Контракт: " + safeContractName
-        );
+        if (!safeToken.isEmpty()) {
+            processedContractRewards.add(safeToken);
+        }
 
         setDirty();
-
         return updated;
     }
-
     // Списание денег
     public long removeBalance(UUID playerId, long amount) {
 
@@ -392,6 +404,13 @@ public class EconomyData extends SavedData {
             }
         }
 
+        CompoundTag savedContractRewards = tag.getCompound("processedContractRewards");
+        for (String token : savedContractRewards.getAllKeys()) {
+            if (savedContractRewards.getBoolean(token)) {
+                data.processedContractRewards.add(token);
+            }
+        }
+
         return data;
     }
 
@@ -580,6 +599,12 @@ public long addQuickSaleBalance(
         }
 
         tag.put("histories", savedHistories);
+
+        CompoundTag savedContractRewards = new CompoundTag();
+        for (String token : processedContractRewards) {
+            savedContractRewards.putBoolean(token, true);
+        }
+        tag.put("processedContractRewards", savedContractRewards);
 
         return tag;
     }
