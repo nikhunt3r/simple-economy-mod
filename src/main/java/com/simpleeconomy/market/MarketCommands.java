@@ -8,6 +8,7 @@ import com.mojang.brigadier.arguments.LongArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.simpleeconomy.SimpleEconomy;
 import com.simpleeconomy.economy.EconomyData;
+import com.simpleeconomy.market.MarketInventoryHelper;
 
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -57,16 +58,6 @@ public class MarketCommands {
                                         LongArgumentType.longArg(1)
                                 )
                                 .executes(MarketCommands::buyListing))
-                        )
-
-                        // Просмотр почты
-                        .then(Commands.literal("mail")
-                                .executes(MarketCommands::showMail)
-                        )
-
-                        // Получение предметов из почты
-                        .then(Commands.literal("claim")
-                                .executes(MarketCommands::claimMail)
                         )
         );
     }
@@ -248,6 +239,31 @@ public class MarketCommands {
                 context.getSource().getServer()
         );
 
+        MarketListing currentListing = market.getListing(id);
+
+if (currentListing == null ||
+        !currentListing.sellerId().equals(player.getUUID())) {
+
+    player.sendSystemMessage(
+            Component.literal(
+                    "Объявление не найдено или принадлежит другому игроку."
+            )
+    );
+    return 0;
+}
+
+if (!MarketInventoryHelper.canFitCompletely(
+        player.getInventory(),
+        currentListing.item()
+)) {
+    player.sendSystemMessage(
+            Component.literal(
+                    "Недостаточно места в инвентаре. Освободите слоты и попробуйте снова."
+            )
+    );
+    return 0;
+}
+
         MarketListing listing = market.cancelListing(
                 id,
                 player.getUUID()
@@ -268,20 +284,15 @@ public class MarketCommands {
 
         // Возвращаем предмет в инвентарь.
         // Если места нет, остаток выпадет рядом с игроком.
-        player.getInventory().add(returnedItem);
+        player.getInventory().add(listing.item());
 
-        if (!returnedItem.isEmpty()) {
-            player.drop(returnedItem, false);
-        }
-        MarketData.saveNow(player.server);
+MarketData.saveNow(player.server);
 
-        player.sendSystemMessage(
-                Component.literal(
-                        "Объявление №"
-                                + id
-                                + " отменено. Предмет возвращён."
-                )
-        );
+player.sendSystemMessage(
+        Component.literal(
+                "Объявление №" + id + " отменено. Предмет возвращён."
+        )
+);
 
         return Command.SINGLE_SUCCESS;
     }
@@ -326,6 +337,18 @@ public class MarketCommands {
             return 0;
         }
 
+        if (!MarketInventoryHelper.canFitCompletely(
+        buyer.getInventory(),
+        listing.item()
+)) {
+    buyer.sendSystemMessage(
+            Component.literal(
+                    "Недостаточно места в инвентаре. Освободите слоты и попробуйте снова."
+            )
+    );
+    return 0;
+}
+
         // Снимаем объявление с рынка.
         // Если оплата не пройдёт, вернём его обратно.
         MarketListing removed = market.removeListing(id);
@@ -369,23 +392,7 @@ public class MarketCommands {
         }
 
         // Передаём предмет покупателю
-        ItemStack purchasedItem = removed.item();
-
-        buyer.getInventory().add(purchasedItem);
-
-        boolean sentToMail = !purchasedItem.isEmpty();
-
-        if (sentToMail) {
-
-            MarketMailboxData mailbox = MarketMailboxData.get(
-                    context.getSource().getServer()
-            );
-
-            mailbox.addItem(
-                    buyer.getUUID(),
-                    purchasedItem
-            );
-        }
+buyer.getInventory().add(removed.item());
 
         long commission = removed.price() / 20L;
 
@@ -411,15 +418,6 @@ public class MarketCommands {
                 )
         );
 
-        if (sentToMail) {
-            buyer.sendSystemMessage(
-                    Component.literal(
-                            "Часть или весь товар помещён в почту. "
-                                    + "Освободи инвентарь и используй /market claim."
-                    )
-            );
-        }
-
         // Если продавец онлайн, уведомляем его
         ServerPlayer onlineSeller = context.getSource()
                 .getServer()
@@ -440,107 +438,6 @@ public class MarketCommands {
                     )
             );
         }
-
-        return Command.SINGLE_SUCCESS;
-    }
-
-    // Просмотр почты
-    private static int showMail(
-            CommandContext<CommandSourceStack> context
-    ) {
-
-        ServerPlayer player = context.getSource().getPlayer();
-
-        if (player == null) {
-            context.getSource().sendFailure(
-                    Component.literal(
-                            "Почта доступна только игрокам."
-                    )
-            );
-            return 0;
-        }
-
-        MarketMailboxData mailbox = MarketMailboxData.get(
-                context.getSource().getServer()
-        );
-
-        int stacks = mailbox.getPendingStackCount(
-                player.getUUID()
-        );
-
-        long items = mailbox.getPendingItemCount(
-                player.getUUID()
-        );
-
-        player.sendSystemMessage(
-                Component.literal(
-                        "В вашей почте "
-                                + stacks
-                                + " стопок, всего предметов: "
-                                + items
-                                + "."
-                )
-        );
-
-        player.sendSystemMessage(
-                Component.literal(
-                        "Используйте /market claim, чтобы забрать предметы."
-                )
-        );
-
-        return Command.SINGLE_SUCCESS;
-    }
-
-    // Получение предметов из почты
-    private static int claimMail(
-            CommandContext<CommandSourceStack> context
-    ) {
-
-        ServerPlayer player = context.getSource().getPlayer();
-
-        if (player == null) {
-            context.getSource().sendFailure(
-                    Component.literal(
-                            "Эту команду могут использовать только игроки."
-                    )
-            );
-            return 0;
-        }
-
-        MarketMailboxData mailbox = MarketMailboxData.get(
-                context.getSource().getServer()
-        );
-
-        long delivered = mailbox.claimItems(
-                player.getUUID(),
-                player.getInventory()
-        );
-
-        long remaining = mailbox.getPendingItemCount(
-                player.getUUID()
-        );
-
-        if (delivered == 0) {
-
-            player.sendSystemMessage(
-                    Component.literal(
-                            "Не удалось забрать предметы. "
-                                    + "Возможно, инвентарь заполнен."
-                    )
-            );
-
-            return 0;
-        }
-
-        player.sendSystemMessage(
-                Component.literal(
-                        "Получено предметов: "
-                                + delivered
-                                + ". Осталось в почте: "
-                                + remaining
-                                + "."
-                )
-        );
 
         return Command.SINGLE_SUCCESS;
     }

@@ -4,8 +4,8 @@ import com.simpleeconomy.SimpleEconomy;
 import com.simpleeconomy.economy.EconomyData;
 import com.simpleeconomy.market.MarketData;
 import com.simpleeconomy.market.MarketListing;
-import com.simpleeconomy.market.MarketMailboxData;
 import com.simpleeconomy.market.ClientMarketCache;
+import com.simpleeconomy.market.MarketInventoryHelper;
 
 import io.netty.buffer.ByteBuf;
 
@@ -113,6 +113,20 @@ public record MarketActionRequest(
             return;
         }
 
+        // Проверяем, поместится ли весь лот в инвентарь.
+if (!MarketInventoryHelper.canFitCompletely(
+        buyer.getInventory(),
+        listing.item()
+)) {
+    sendResult(
+            buyer,
+            false,
+            "Недостаточно места в инвентаре. Освободите слоты и попробуйте снова.",
+            request.ownOnly()
+    );
+    return;
+}
+
         // Снимаем лот с рынка
         MarketListing removed = market.removeListing(request.listingId());
 
@@ -151,20 +165,10 @@ public record MarketActionRequest(
             return;
         }
 
-        // Передаём предмет покупателю
-        ItemStack purchasedItem = removed.item();
+        // Передаём весь предмет покупателю.
+buyer.getInventory().add(removed.item());
 
-        buyer.getInventory().add(purchasedItem);
-
-        // Остаток отправляем в почту
-        if (!purchasedItem.isEmpty()) {
-
-            MarketMailboxData.get(buyer.server).addItem(
-                    buyer.getUUID(),
-                    purchasedItem
-            );
-        }
-        MarketData.saveNow(buyer.server);
+MarketData.saveNow(buyer.server);
 
         long commission = removed.price() / 20L;
 
@@ -195,46 +199,66 @@ public record MarketActionRequest(
     }
 
     private static void cancel(
-            ServerPlayer player,
-            MarketActionRequest request
-    ) {
+        ServerPlayer player,
+        MarketActionRequest request
+) {
 
-        MarketData market = MarketData.get(player.server);
+    MarketData market = MarketData.get(player.server);
 
-        MarketListing removed = market.cancelListing(
-                request.listingId(),
-                player.getUUID()
-        );
+    MarketListing listing = market.getListing(request.listingId());
 
-        if (removed == null) {
-            sendResult(
-                    player,
-                    false,
-                    "Объявление не найдено или принадлежит другому игроку.",
-                    request.ownOnly()
-            );
-            return;
-        }
-
-        ItemStack returnedItem = removed.item();
-
-        player.getInventory().add(returnedItem);
-
-        if (!returnedItem.isEmpty()) {
-            MarketMailboxData.get(player.server).addItem(
-                    player.getUUID(),
-                    returnedItem
-            );
-        }
-        MarketData.saveNow(player.server);
+    if (listing == null ||
+            !listing.sellerId().equals(player.getUUID())) {
 
         sendResult(
                 player,
-                true,
-                "Объявление снято. Предмет возвращён.",
+                false,
+                "Объявление не найдено или принадлежит другому игроку.",
                 request.ownOnly()
         );
+        return;
     }
+
+    // Проверяем, поместится ли возвращаемый лот.
+    if (!MarketInventoryHelper.canFitCompletely(
+            player.getInventory(),
+            listing.item()
+    )) {
+        sendResult(
+                player,
+                false,
+                "Недостаточно места в инвентаре. Освободите слоты и попробуйте снова.",
+                request.ownOnly()
+        );
+        return;
+    }
+
+    MarketListing removed = market.cancelListing(
+            request.listingId(),
+            player.getUUID()
+    );
+
+    if (removed == null) {
+        sendResult(
+                player,
+                false,
+                "Не удалось снять объявление.",
+                request.ownOnly()
+        );
+        return;
+    }
+
+    player.getInventory().add(removed.item());
+
+    MarketData.saveNow(player.server);
+
+    sendResult(
+            player,
+            true,
+            "Объявление снято. Предмет возвращён.",
+            request.ownOnly()
+    );
+}
 
     private static void sendResult(
         ServerPlayer player,
