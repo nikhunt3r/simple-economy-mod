@@ -1,5 +1,7 @@
 package com.simpleeconomy.client;
 
+import com.simpleeconomy.util.EconomyText;
+
 import com.simpleeconomy.SimpleEconomy;
 import com.simpleeconomy.market.ClientQuickSaleCache;
 
@@ -53,7 +55,7 @@ public class QuickSaleTooltipHandler {
         ).replace(',', ' ');
 
         event.getToolTip().add(
-                Component.literal(
+                EconomyText.component(
                         "Быстрая продажа: "
                                 + formattedPrice
                                 + " $/шт."
