@@ -117,7 +117,7 @@ public class HistoryScreen extends Screen {
         // Заголовок
         graphics.drawString(
                 this.font,
-                "ИСТОРИЯ ОПЕРАЦИЙ",
+                EconomyText.component("ИСТОРИЯ ОПЕРАЦИЙ"),
                 panelX + 18,
                 panelY + 17,
                 WHITE
@@ -125,7 +125,7 @@ public class HistoryScreen extends Screen {
 
         graphics.drawString(
                 this.font,
-                "Последние движения средств на вашем счёте",
+                EconomyText.component("Последние движения средств на вашем счёте"),
                 panelX + 18,
                 panelY + 34,
                 GRAY
@@ -138,7 +138,7 @@ public class HistoryScreen extends Screen {
 
         graphics.drawString(
                 this.font,
-                "ОПЕРАЦИЯ",
+                EconomyText.component("ОПЕРАЦИЯ"),
                 typeX,
                 panelY + 53,
                 GRAY
@@ -146,7 +146,7 @@ public class HistoryScreen extends Screen {
 
         graphics.drawString(
                 this.font,
-                "ОПИСАНИЕ",
+                EconomyText.component("ОПИСАНИЕ"),
                 descriptionX,
                 panelY + 53,
                 GRAY
@@ -154,7 +154,7 @@ public class HistoryScreen extends Screen {
 
         graphics.drawString(
                 this.font,
-                "ДАТА",
+                EconomyText.component("ДАТА"),
                 dateX,
                 panelY + 53,
                 GRAY
@@ -221,7 +221,7 @@ public class HistoryScreen extends Screen {
 
                     graphics.drawString(
                             this.font,
-                            truncate(entry.type(), 112),
+                            EconomyText.transactionType(entry.type()).getString(),
                             typeX,
                             rowY + 6,
                             typeColor
@@ -234,7 +234,7 @@ public class HistoryScreen extends Screen {
                     graphics.drawString(
                             this.font,
                             truncate(
-                                    entry.description(),
+                                    EconomyText.transactionDescription(entry.description()).getString(),
                                     descriptionMaxWidth
                             ),
                             descriptionX,
