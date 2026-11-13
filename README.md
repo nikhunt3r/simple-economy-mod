@@ -42,6 +42,16 @@ The main goal of the mod is to provide a simple and convenient economy system fo
 - Dedicated marketplace tabs for browsing listings, managing personal listings, and selling items.
 - The economy menu can be opened through a keybind or a command.
 
+## Integration API
+
+Other NeoForge mods can use the public server-side API:
+
+`com.simpleeconomy.api.EconomyAPI.addContractReward(ServerPlayer, long, String)`
+
+This method awards virtual money and adds a transaction-history entry with the type
+`Награда за контракт` and the supplied contract name. Call it only on the logical
+server thread, after validating the completed task on the server.
+
 ## Marketplace Rules
 
 The marketplace follows several important rules:
