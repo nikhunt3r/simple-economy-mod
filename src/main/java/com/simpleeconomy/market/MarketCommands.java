@@ -1,5 +1,7 @@
 package com.simpleeconomy.market;
 
+import com.simpleeconomy.util.EconomyText;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -71,7 +73,7 @@ public class MarketCommands {
 
         if (player == null) {
             context.getSource().sendFailure(
-                    Component.literal(
+                    EconomyText.component(
                             "Эту команду может использовать только игрок."
                     )
             );
@@ -89,7 +91,7 @@ public class MarketCommands {
         if (heldItem.isEmpty()) {
 
             player.sendSystemMessage(
-                    Component.literal(
+                    EconomyText.component(
                             "Возьми предмет в основную руку."
                     )
             );
@@ -129,7 +131,7 @@ public class MarketCommands {
                     + " $";
 
             player.sendSystemMessage(
-                    Component.literal(message)
+                    EconomyText.component(message)
             );
 
             return Command.SINGLE_SUCCESS;
@@ -137,7 +139,7 @@ public class MarketCommands {
         } catch (IllegalArgumentException exception) {
 
             player.sendSystemMessage(
-                    Component.literal(exception.getMessage())
+                    EconomyText.component(exception.getMessage())
             );
 
             return 0;
@@ -156,7 +158,7 @@ public class MarketCommands {
         List<MarketListing> listings = market.getListings();
 
         source.sendSuccess(
-                () -> Component.literal(
+                () -> EconomyText.component(
                         "РЫНОК: активных объявлений "
                                 + listings.size()
                 ),
@@ -166,7 +168,7 @@ public class MarketCommands {
         if (listings.isEmpty()) {
 
             source.sendSuccess(
-                    () -> Component.literal(
+                    () -> EconomyText.component(
                             "На рынке пока нет товаров."
                     ),
                     false
@@ -196,7 +198,7 @@ public class MarketCommands {
                     + listing.sellerName();
 
             source.sendSuccess(
-                    () -> Component.literal(message),
+                    () -> EconomyText.component(message),
                     false
             );
         }
@@ -206,7 +208,7 @@ public class MarketCommands {
             int remaining = listings.size() - count;
 
             source.sendSuccess(
-                    () -> Component.literal(
+                    () -> EconomyText.component(
                             "Ещё объявлений: " + remaining
                     ),
                     false
@@ -225,7 +227,7 @@ public class MarketCommands {
 
         if (player == null) {
             context.getSource().sendFailure(
-                    Component.literal(
+                    EconomyText.component(
                             "Эту команду может использовать только игрок."
                     )
             );
@@ -245,7 +247,7 @@ if (currentListing == null ||
         !currentListing.sellerId().equals(player.getUUID())) {
 
     player.sendSystemMessage(
-            Component.literal(
+            EconomyText.component(
                     "Объявление не найдено или принадлежит другому игроку."
             )
     );
@@ -257,7 +259,7 @@ if (!MarketInventoryHelper.canFitCompletely(
         currentListing.item()
 )) {
     player.sendSystemMessage(
-            Component.literal(
+            EconomyText.component(
                     "Недостаточно места в инвентаре. Освободите слоты и попробуйте снова."
             )
     );
@@ -272,7 +274,7 @@ if (!MarketInventoryHelper.canFitCompletely(
         if (listing == null) {
 
             player.sendSystemMessage(
-                    Component.literal(
+                    EconomyText.component(
                             "Объявление не найдено или принадлежит другому игроку."
                     )
             );
@@ -289,7 +291,7 @@ if (!MarketInventoryHelper.canFitCompletely(
 MarketData.saveNow(player.server);
 
 player.sendSystemMessage(
-        Component.literal(
+        EconomyText.component(
                 "Объявление №" + id + " отменено. Предмет возвращён."
         )
 );
@@ -306,7 +308,7 @@ player.sendSystemMessage(
 
         if (buyer == null) {
             context.getSource().sendFailure(
-                    Component.literal(
+                    EconomyText.component(
                             "Покупать товары могут только игроки."
                     )
             );
@@ -323,14 +325,14 @@ player.sendSystemMessage(
 
         if (listing == null) {
             buyer.sendSystemMessage(
-                    Component.literal("Объявление не найдено.")
+                    EconomyText.component("Объявление не найдено.")
             );
             return 0;
         }
 
         if (listing.sellerId().equals(buyer.getUUID())) {
             buyer.sendSystemMessage(
-                    Component.literal(
+                    EconomyText.component(
                             "Нельзя покупать собственный товар."
                     )
             );
@@ -342,7 +344,7 @@ player.sendSystemMessage(
         listing.item()
 )) {
     buyer.sendSystemMessage(
-            Component.literal(
+            EconomyText.component(
                     "Недостаточно места в инвентаре. Освободите слоты и попробуйте снова."
             )
     );
@@ -355,7 +357,7 @@ player.sendSystemMessage(
 
         if (removed == null) {
             buyer.sendSystemMessage(
-                    Component.literal(
+                    EconomyText.component(
                             "Объявление уже недоступно."
                     )
             );
@@ -385,7 +387,7 @@ player.sendSystemMessage(
             market.restoreListing(removed);
 
             buyer.sendSystemMessage(
-                    Component.literal(exception.getMessage())
+                    EconomyText.component(exception.getMessage())
             );
 
             return 0;
@@ -397,7 +399,7 @@ buyer.getInventory().add(removed.item());
         long commission = removed.price() / 20L;
 
         buyer.sendSystemMessage(
-                Component.literal(
+                EconomyText.component(
                         "Вы купили "
                                 + removed.item().getHoverName().getString()
                                 + " x"
@@ -409,7 +411,7 @@ buyer.getInventory().add(removed.item());
         );
 
         buyer.sendSystemMessage(
-                Component.literal(
+                EconomyText.component(
                         "Комиссия рынка: "
                                 + formatMoney(commission)
                                 + " $. Продавцу перечислено: "
@@ -427,7 +429,7 @@ buyer.getInventory().add(removed.item());
         if (onlineSeller != null) {
 
             onlineSeller.sendSystemMessage(
-                    Component.literal(
+                    EconomyText.component(
                             "Ваш товар "
                                     + removed.item().getHoverName().getString()
                                     + " купили за "
