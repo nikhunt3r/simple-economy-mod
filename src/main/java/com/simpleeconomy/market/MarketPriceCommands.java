@@ -1,5 +1,7 @@
 package com.simpleeconomy.market;
 
+import com.simpleeconomy.util.EconomyText;
+
 import com.mojang.brigadier.arguments.LongArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
@@ -108,7 +110,7 @@ public class MarketPriceCommands {
 
         if (!(context.getSource().getEntity() instanceof ServerPlayer player)) {
             context.getSource().sendFailure(
-                    Component.literal(
+                    EconomyText.component(
                             "Для этой команды возьми предмет в основную руку."
                     )
             );
@@ -119,7 +121,7 @@ public class MarketPriceCommands {
 
         if (stack.isEmpty()) {
             player.sendSystemMessage(
-                    Component.literal("В руке нет предмета.")
+                    EconomyText.component("В руке нет предмета.")
             );
             return 0;
         }
@@ -170,7 +172,7 @@ public class MarketPriceCommands {
         String itemName = id.toString();
 
         context.getSource().sendSuccess(
-                () -> Component.literal(
+                () -> EconomyText.component(
                         "Цена быстрой продажи установлена: "
                                 + itemName
                                 + " = "
@@ -189,7 +191,7 @@ public class MarketPriceCommands {
 
         if (!(context.getSource().getEntity() instanceof ServerPlayer player)) {
             context.getSource().sendFailure(
-                    Component.literal(
+                    EconomyText.component(
                             "Укажи ID предмета при использовании из консоли."
                     )
             );
@@ -200,7 +202,7 @@ public class MarketPriceCommands {
 
         if (stack.isEmpty()) {
             player.sendSystemMessage(
-                    Component.literal("В руке нет предмета.")
+                    EconomyText.component("В руке нет предмета.")
             );
             return 0;
         }
@@ -239,7 +241,7 @@ public class MarketPriceCommands {
 
         if (!removed) {
             context.getSource().sendFailure(
-                    Component.literal("Для этого предмета цена не установлена.")
+                    EconomyText.component("Для этого предмета цена не установлена.")
             );
             return 0;
         }
@@ -247,7 +249,7 @@ public class MarketPriceCommands {
         saveAndSync(server);
 
         context.getSource().sendSuccess(
-                () -> Component.literal(
+                () -> EconomyText.component(
                         "Цена быстрой продажи удалена: " + id
                 ),
                 true
@@ -262,7 +264,7 @@ public class MarketPriceCommands {
 
         if (!(context.getSource().getEntity() instanceof ServerPlayer player)) {
             context.getSource().sendFailure(
-                    Component.literal(
+                    EconomyText.component(
                             "Укажи ID предмета при использовании из консоли."
                     )
             );
@@ -273,7 +275,7 @@ public class MarketPriceCommands {
 
         if (stack.isEmpty()) {
             player.sendSystemMessage(
-                    Component.literal("В руке нет предмета.")
+                    EconomyText.component("В руке нет предмета.")
             );
             return 0;
         }
@@ -315,7 +317,7 @@ public class MarketPriceCommands {
                 : "Цена для " + id + " не установлена.";
 
         context.getSource().sendSuccess(
-                () -> Component.literal(message),
+                () -> EconomyText.component(message),
                 false
         );
 
@@ -331,7 +333,7 @@ public class MarketPriceCommands {
         ).getAllPrices();
 
         context.getSource().sendSuccess(
-                () -> Component.literal(
+                () -> EconomyText.component(
                         "Установлено цен: " + prices.size()
                 ),
                 false
@@ -340,7 +342,7 @@ public class MarketPriceCommands {
         for (Map.Entry<String, Long> entry : prices.entrySet()) {
 
             context.getSource().sendSuccess(
-                    () -> Component.literal(
+                    () -> EconomyText.component(
                             entry.getKey()
                                     + " = "
                                     + formatMoney(entry.getValue())
@@ -363,7 +365,7 @@ public class MarketPriceCommands {
         if (id == null || BuiltInRegistries.ITEM.getOptional(id).isEmpty()) {
 
             context.getSource().sendFailure(
-                    Component.literal("Неизвестный предмет: " + value)
+                    EconomyText.component("Неизвестный предмет: " + value)
             );
 
             return null;
