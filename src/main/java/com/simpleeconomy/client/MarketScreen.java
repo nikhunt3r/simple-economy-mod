@@ -763,7 +763,7 @@ protected void renderLabels(
 
         graphics.drawString(
                 this.font,
-                EconomyText.component("Найдено: ") + ClientMarketCache.getTotalListings(),
+                Component.translatable("screen.simpleeconomy.market.found", ClientMarketCache.getTotalListings()),
                 175,
                 89,
                 GRAY
@@ -771,10 +771,7 @@ protected void renderLabels(
 
         graphics.drawString(
                 this.font,
-                EconomyText.component("Страница ")
-                        + (ClientMarketCache.getPage() + 1)
-                        + " / "
-                        + ClientMarketCache.getTotalPages(),
+                Component.translatable("screen.simpleeconomy.market.page", ClientMarketCache.getPage() + 1, ClientMarketCache.getTotalPages()),
                 365,
                 89,
                 GREEN
@@ -914,7 +911,7 @@ protected void renderLabels(
 
             graphics.drawString(
                     this.font,
-                    EconomyText.component("Количество: ") + stack.getCount(),
+                    Component.translatable("screen.simpleeconomy.market.quick_sell.quantity", stack.getCount()),
                     65,
                     103,
                     GRAY
@@ -951,8 +948,7 @@ protected void renderLabels(
 
                     graphics.drawString(
                             this.font,
-                            EconomyText.component("Цена за 1 штуку: ")
-                                    + formatMoney(unitPrice) + " $",
+                            Component.translatable("screen.simpleeconomy.market.quick_sell.unit_price", formatMoney(unitPrice)),
                             65,
                             119,
                             GREEN
@@ -960,8 +956,7 @@ protected void renderLabels(
 
                     graphics.drawString(
                             this.font,
-                            EconomyText.component("Всего за стак: ")
-                                    + formatMoney(totalPrice) + " $",
+                            Component.translatable("screen.simpleeconomy.market.quick_sell.stack_total", formatMoney(totalPrice)),
                             65,
                             137,
                             GREEN
