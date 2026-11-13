@@ -1,5 +1,7 @@
 package com.simpleeconomy.network;
 
+import com.simpleeconomy.util.EconomyText;
+
 import com.simpleeconomy.SimpleEconomy;
 import com.simpleeconomy.economy.EconomyData;
 
@@ -95,7 +97,7 @@ public record TransferRequest(
 
             // Уведомление получателю
             target.sendSystemMessage(
-                    Component.literal(
+                    EconomyText.component(
                             "Игрок " + sender.getName().getString()
                                     + " перевёл вам "
                                     + formatMoney(payload.amount())
