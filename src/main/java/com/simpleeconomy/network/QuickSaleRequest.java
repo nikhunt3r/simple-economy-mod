@@ -1,5 +1,7 @@
 package com.simpleeconomy.network;
 
+import com.simpleeconomy.util.EconomyText;
+
 import com.simpleeconomy.SimpleEconomy;
 
 import com.simpleeconomy.economy.EconomyData;
