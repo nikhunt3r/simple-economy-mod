@@ -1,5 +1,7 @@
 package com.simpleeconomy.network;
 
+import com.simpleeconomy.util.EconomyText;
+
 import com.simpleeconomy.SimpleEconomy;
 import com.simpleeconomy.economy.EconomyData;
 import com.simpleeconomy.market.MarketData;
@@ -179,7 +181,7 @@ MarketData.saveNow(buyer.server);
 
         if (seller != null) {
             seller.sendSystemMessage(
-                    Component.literal(
+                    EconomyText.component(
                             "Ваш товар купили. Начислено "
                                     + formatMoney(payout) + " $."
                     )
