@@ -113,7 +113,7 @@ HistoryRequest.request();
         // Название мода
         graphics.drawString(
                 this.font,
-                "SIMPLE",
+                EconomyText.component("SIMPLE"),
                 panelX + 15,
                 panelY + 22,
                 GREEN
@@ -121,7 +121,7 @@ HistoryRequest.request();
 
         graphics.drawString(
                 this.font,
-                "ECONOMY",
+                EconomyText.component("ECONOMY"),
                 panelX + 15,
                 panelY + 34,
                 WHITE
@@ -130,7 +130,7 @@ HistoryRequest.request();
         // Навигация
         graphics.drawString(
                 this.font,
-                "ОБЗОР",
+                EconomyText.component("ОБЗОР"),
                 panelX + 15,
                 panelY + 75,
                 GREEN
@@ -138,7 +138,7 @@ HistoryRequest.request();
 
         graphics.drawString(
                 this.font,
-                "Переводы",
+                EconomyText.component("Переводы"),
                 panelX + 15,
                 panelY + 105,
                 GRAY
@@ -146,7 +146,7 @@ HistoryRequest.request();
 
         graphics.drawString(
                 this.font,
-                "Магазин",
+                EconomyText.component("Магазин"),
                 panelX + 15,
                 panelY + 130,
                 GRAY
@@ -154,7 +154,7 @@ HistoryRequest.request();
 
         graphics.drawString(
                 this.font,
-                "История",
+                EconomyText.component("История"),
                 panelX + 15,
                 panelY + 155,
                 GRAY
@@ -172,7 +172,7 @@ HistoryRequest.request();
         // Заголовок главной страницы
         graphics.drawString(
                 this.font,
-                "Главная",
+                EconomyText.component("Главная"),
                 contentX,
                 panelY + 20,
                 WHITE
@@ -180,7 +180,7 @@ HistoryRequest.request();
 
         graphics.drawString(
                 this.font,
-                "Ваш финансовый кабинет",
+                EconomyText.component("Ваш финансовый кабинет"),
                 contentX,
                 panelY + 35,
                 GRAY
@@ -200,7 +200,7 @@ HistoryRequest.request();
 
         graphics.drawString(
                 this.font,
-                "ОБЩИЙ БАЛАНС",
+                EconomyText.component("ОБЩИЙ БАЛАНС"),
                 contentX + 14,
                 balanceY + 13,
                 GRAY
@@ -224,7 +224,7 @@ graphics.drawString(
 
         graphics.drawString(
                 this.font,
-                "Ваши игровые средства",
+                EconomyText.component("Ваши игровые средства"),
                 contentX + 14,
                 balanceY + 60,
                 GRAY
@@ -252,7 +252,7 @@ graphics.drawString(
 
         graphics.drawString(
                 this.font,
-                "Переводы",
+                EconomyText.component("Переводы"),
                 contentX + 10,
                 actionY + 13,
                 WHITE
@@ -260,7 +260,7 @@ graphics.drawString(
 
         graphics.drawString(
                 this.font,
-                "Отправить деньги",
+                EconomyText.component("Отправить деньги"),
                 contentX + 10,
                 actionY + 29,
                 GRAY
@@ -268,7 +268,7 @@ graphics.drawString(
 
         graphics.drawString(
                 this.font,
-                "Магазин",
+                EconomyText.component("Магазин"),
                 contentX + actionWidth + 18,
                 actionY + 13,
                 WHITE
@@ -276,7 +276,7 @@ graphics.drawString(
 
         graphics.drawString(
                 this.font,
-                "Покупка товаров",
+                EconomyText.component("Покупка товаров"),
                 contentX + actionWidth + 18,
                 actionY + 29,
                 GRAY
@@ -288,7 +288,7 @@ graphics.drawString(
         
 graphics.drawString(
         this.font,
-        "Последние операции",
+        EconomyText.component("Последние операции"),
         contentX,
         historyY,
         WHITE
@@ -301,7 +301,7 @@ if (!ClientHistoryCache.hasReceived()) {
 
     graphics.drawString(
             this.font,
-            "Загрузка истории...",
+            EconomyText.component("Загрузка истории..."),
             contentX,
             historyY + 19,
             GRAY
@@ -311,7 +311,7 @@ if (!ClientHistoryCache.hasReceived()) {
 
     graphics.drawString(
             this.font,
-            "Операций пока нет",
+            EconomyText.component("Операций пока нет"),
             contentX,
             historyY + 19,
             GRAY
